@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">AndroidProgrammingClasses</string>
+  <string name="hello_world">Witaj Świecie!</string>
+  <string name="alternative_text">Witam</string>
+</resources>
