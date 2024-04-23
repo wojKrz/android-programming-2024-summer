@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_main"
+  app:startDestination="@id/startScreen">
+
+  <action
+    android:id="@+id/actionNavigateToSecondScreen"
+    app:destination="@id/secondScreen" />
+
+  <fragment
+    android:id="@+id/secondScreen"
+    android:name="edu.androidprogrammingclasses.SecondFragment"
+    tools:layout="@layout/fragment_second">
+
+    <action
+      android:id="@+id/actionNavigateToThirdScreen"
+      app:destination="@id/thirdScreen" />
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/thirdScreen"
+    android:name="edu.androidprogrammingclasses.ThirdFragment"
+    tools:layout="@layout/fragment_third" >
+    <argument
+      android:name="exampleArgument"
+      app:argType="string"/>
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/startScreen"
+    android:name="edu.androidprogrammingclasses.StartFragment"
+    tools:layout="@layout/fragment_start">
+
+    <action
+      android:id="@+id/actionNavigateToThirdScreenFromStartScreen"
+      app:destination="@id/thirdScreen"      >
+      <argument
+        android:name="exampleArgument"
+        app:argType="string"
+        android:defaultValue="I navigated from start" />
+    </action>
+
+  </fragment>
+
+</navigation>
