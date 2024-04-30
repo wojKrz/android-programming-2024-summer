@@ -2,22 +2,32 @@
 <layout
   xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <FrameLayout
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
       android:id="@+id/navigateButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
       android:text="Navigate" />
 
     <Button
-      android:id="@+id/navigateButton2"
+      android:id="@+id/networkCallButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
-      android:text="Navigate" />
-  </FrameLayout>
+      android:text="Do net call" />
+
+    <ProgressBar
+      android:id="@+id/progressIndicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone" />
+
+    <TextView
+      android:id="@+id/text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+  </LinearLayout>
 </layout>

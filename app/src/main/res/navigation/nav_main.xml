@@ -12,7 +12,7 @@
 
   <fragment
     android:id="@+id/secondScreen"
-    android:name="edu.androidprogrammingclasses.SecondFragment"
+    android:name="edu.androidprogrammingclasses.second.SecondFragment"
     tools:layout="@layout/fragment_second">
 
     <action
@@ -33,7 +33,7 @@
 
   <fragment
     android:id="@+id/startScreen"
-    android:name="edu.androidprogrammingclasses.StartFragment"
+    android:name="edu.androidprogrammingclasses.start.StartFragment"
     tools:layout="@layout/fragment_start">
 
     <action
