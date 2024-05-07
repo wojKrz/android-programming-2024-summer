@@ -33,7 +33,7 @@
 
   <fragment
     android:id="@+id/startScreen"
-    android:name="edu.androidprogrammingclasses.start.StartFragment"
+    android:name="edu.androidprogrammingclasses.start.TodoListFragment"
     tools:layout="@layout/fragment_start">
 
     <action

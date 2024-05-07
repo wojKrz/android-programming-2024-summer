@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import edu.androidprogrammingclasses.databinding.FragmentSecondBinding
-import edu.androidprogrammingclasses.start.StartViewModel
 
 class SecondFragment : Fragment() {
   private val viewModel: SecondViewModel by viewModels()
