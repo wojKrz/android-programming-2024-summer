@@ -1,6 +1,7 @@
 package edu.androidprogrammingclasses.start
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import edu.androidprogrammingclasses.R
 import edu.androidprogrammingclasses.databinding.FragmentStartBinding
 import edu.androidprogrammingclasses.start.TodoListViewState.Loading
@@ -19,6 +22,8 @@ class TodoListFragment : Fragment() {
   private lateinit var binding: FragmentStartBinding
 
   private val viewModel: TodoListViewModel by viewModels()
+
+  private val todosAdapter = TodosListAdapter(::onToggleClicked)
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -41,14 +46,24 @@ class TodoListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    binding.todoList.apply {
+      adapter = todosAdapter
+      layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    }
+
     viewModel.responseLiveData.observe(viewLifecycleOwner) {
-      when(it) {
+      when (it) {
         Loading -> binding.progressIndicator.visibility = VISIBLE
         is Success -> {
           binding.progressIndicator.visibility = GONE
-          binding.text.text = it.result.toString()
+          todosAdapter.data = it.result
+          todosAdapter.notifyDataSetChanged()
         }
       }
     }
+  }
+
+  private fun onToggleClicked(todoId: Int) {
+    viewModel.toggleTodoState(todoId)
   }
 }

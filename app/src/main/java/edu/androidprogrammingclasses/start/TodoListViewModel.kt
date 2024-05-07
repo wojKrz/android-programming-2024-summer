@@ -30,6 +30,19 @@ class TodoListViewModel : ViewModel() {
 
   private val todosService = retrofit.create(TodosApiService::class.java)
 
+  private val todosListRepository = TodosListRepository()
+
+  private val getDataFromNetworkUseCase = GetDataFromNetworkUseCase(
+    todosService,
+    todosListRepository,
+    viewModelScope
+  )
+
+  private val toggleTodoCompletionUseCase = ToggleTodoCompletionUseCase(
+    todosListRepository
+  )
+
+
   private val _responseLiveData = MutableLiveData<TodoListViewState>()
   val responseLiveData: LiveData<TodoListViewState> = _responseLiveData
 
@@ -37,14 +50,25 @@ class TodoListViewModel : ViewModel() {
     viewModelScope.launch {
       _responseLiveData.value = Loading
 
-      val response = async(Dispatchers.IO) {
-        todosService.getTodos()
-      }.await()
+      val response = getDataFromNetworkUseCase.invoke()
 
       withContext(Dispatchers.Main) {
         response
           .run(::Success)
           .let(_responseLiveData::setValue)
+      }
+    }
+  }
+
+  fun toggleTodoState(todoId: Int) {
+    _responseLiveData.value.apply {
+      when (this) {
+        is Success -> {
+          toggleTodoCompletionUseCase.invoke(todoId)
+          _responseLiveData.value = Success(todosListRepository.getTodos())
+        }
+
+        else -> {}
       }
     }
   }
