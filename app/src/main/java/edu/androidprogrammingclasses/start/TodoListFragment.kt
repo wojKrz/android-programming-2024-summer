@@ -7,15 +7,21 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.datastore.preferences.core.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.androidprogrammingclasses.R
+import edu.androidprogrammingclasses.TEXT
+import edu.androidprogrammingclasses.dataStore
 import edu.androidprogrammingclasses.databinding.FragmentStartBinding
 import edu.androidprogrammingclasses.start.TodoListViewState.Loading
 import edu.androidprogrammingclasses.start.TodoListViewState.Success
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class TodoListFragment : Fragment() {
 
@@ -40,6 +46,15 @@ class TodoListFragment : Fragment() {
       viewModel.getDataFromNetwork()
     }
 
+    binding.textButton.setOnClickListener {
+      lifecycleScope.launch {
+        requireContext().dataStore
+          .edit {
+            it[TEXT] = binding.editText.text.toString()
+          }
+      }
+    }
+
     return binding.root
   }
 
@@ -49,6 +64,15 @@ class TodoListFragment : Fragment() {
     binding.todoList.apply {
       adapter = todosAdapter
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    }
+
+    lifecycleScope.launch {
+      requireContext().dataStore
+        .data
+        .map { it[TEXT] ?: "String was empty" }
+        .collect {
+          binding.textResult.text = it
+        }
     }
 
     viewModel.responseLiveData.observe(viewLifecycleOwner) {

@@ -46,6 +46,8 @@ dependencies {
 
   implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
 
+  implementation("androidx.datastore:datastore-preferences:1.1.1")
+
   implementation("com.squareup.okhttp3:okhttp:4.12.0")
   implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
   implementation("com.squareup.retrofit2:retrofit:2.9.0")

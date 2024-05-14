@@ -10,6 +10,16 @@
     android:id="@+id/actionNavigateToSecondScreen"
     app:destination="@id/secondScreen" />
 
+  <action
+    android:id="@+id/actionNavigateToWelcomeDialog"
+    app:launchSingleTop="true"
+    app:destination="@id/welcomeDialog" />
+
+  <dialog
+    android:id="@+id/welcomeDialog"
+    android:name="edu.androidprogrammingclasses.welcome.WelcomeDialog"
+    tools:layout="@layout/dialog_welcome" />
+
   <fragment
     android:id="@+id/secondScreen"
     android:name="edu.androidprogrammingclasses.second.SecondFragment"
@@ -24,10 +34,10 @@
   <fragment
     android:id="@+id/thirdScreen"
     android:name="edu.androidprogrammingclasses.ThirdFragment"
-    tools:layout="@layout/fragment_third" >
+    tools:layout="@layout/fragment_third">
     <argument
       android:name="exampleArgument"
-      app:argType="string"/>
+      app:argType="string" />
 
   </fragment>
 
@@ -38,11 +48,11 @@
 
     <action
       android:id="@+id/actionNavigateToThirdScreenFromStartScreen"
-      app:destination="@id/thirdScreen"      >
+      app:destination="@id/thirdScreen">
       <argument
         android:name="exampleArgument"
-        app:argType="string"
-        android:defaultValue="I navigated from start" />
+        android:defaultValue="I navigated from start"
+        app:argType="string" />
     </action>
 
   </fragment>
