@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import edu.androidprogrammingclasses.MyApplication
 import edu.androidprogrammingclasses.start.TodoListViewState.Loading
 import edu.androidprogrammingclasses.start.TodoListViewState.Success
+import edu.androidprogrammingclasses.todo.TodoMapper
 import edu.androidprogrammingclasses.todo.TodosApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -16,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
 
 class TodoListViewModel : ViewModel() {
   private val netClient = OkHttpClient.Builder()
@@ -34,14 +38,14 @@ class TodoListViewModel : ViewModel() {
 
   private val getDataFromNetworkUseCase = GetDataFromNetworkUseCase(
     todosService,
-    todosListRepository,
+    MyApplication.database.getTodosDao(),
+    TodoMapper(),
     viewModelScope
   )
 
   private val toggleTodoCompletionUseCase = ToggleTodoCompletionUseCase(
     todosListRepository
   )
-
 
   private val _responseLiveData = MutableLiveData<TodoListViewState>()
   val responseLiveData: LiveData<TodoListViewState> = _responseLiveData
@@ -50,11 +54,11 @@ class TodoListViewModel : ViewModel() {
     viewModelScope.launch {
       _responseLiveData.value = Loading
 
-      val response = getDataFromNetworkUseCase.invoke()
+      val response =
+        getDataFromNetworkUseCase.invoke().run(::Success)
 
       withContext(Dispatchers.Main) {
         response
-          .run(::Success)
           .let(_responseLiveData::setValue)
       }
     }

@@ -18,6 +18,7 @@ import edu.androidprogrammingclasses.R
 import edu.androidprogrammingclasses.TEXT
 import edu.androidprogrammingclasses.dataStore
 import edu.androidprogrammingclasses.databinding.FragmentStartBinding
+import edu.androidprogrammingclasses.start.TodoListViewState.Error
 import edu.androidprogrammingclasses.start.TodoListViewState.Loading
 import edu.androidprogrammingclasses.start.TodoListViewState.Success
 import kotlinx.coroutines.flow.map
@@ -82,6 +83,11 @@ class TodoListFragment : Fragment() {
           binding.progressIndicator.visibility = GONE
           todosAdapter.data = it.result
           todosAdapter.notifyDataSetChanged()
+        }
+
+        is Error -> {
+          binding.progressIndicator.visibility = GONE
+          Log.e("Todos fetch", it.e.message.orEmpty())
         }
       }
     }
