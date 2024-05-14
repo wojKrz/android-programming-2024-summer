@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.androidprogrammingclasses.MyApplication
 import edu.androidprogrammingclasses.start.TodoListViewState.Loading
 import edu.androidprogrammingclasses.start.TodoListViewState.Success
@@ -20,28 +21,15 @@ import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class TodoListViewModel : ViewModel() {
-  private val netClient = OkHttpClient.Builder()
-    .addInterceptor(HttpLoggingInterceptor().apply { this.setLevel(BODY) })
-    .build()
+@HiltViewModel
+class TodoListViewModel @Inject constructor(
+  private val getDataFromNetworkUseCase: GetDataFromNetworkUseCase
+) : ViewModel() {
 
-  private val retrofit = Retrofit.Builder()
-    .baseUrl("https://jsonplaceholder.typicode.com/")
-    .addConverterFactory(GsonConverterFactory.create())
-    .client(netClient)
-    .build()
-
-  private val todosService = retrofit.create(TodosApiService::class.java)
 
   private val todosListRepository = TodosListRepository()
-
-  private val getDataFromNetworkUseCase = GetDataFromNetworkUseCase(
-    todosService,
-    MyApplication.database.getTodosDao(),
-    TodoMapper(),
-    viewModelScope
-  )
 
   private val toggleTodoCompletionUseCase = ToggleTodoCompletionUseCase(
     todosListRepository
@@ -54,8 +42,9 @@ class TodoListViewModel : ViewModel() {
     viewModelScope.launch {
       _responseLiveData.value = Loading
 
-      val response =
+      val response = async(Dispatchers.IO) {
         getDataFromNetworkUseCase.invoke().run(::Success)
+      }.await()
 
       withContext(Dispatchers.Main) {
         response

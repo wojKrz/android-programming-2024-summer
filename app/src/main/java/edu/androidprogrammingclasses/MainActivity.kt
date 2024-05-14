@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import edu.androidprogrammingclasses.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -20,6 +21,8 @@ import kotlinx.coroutines.launch
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 val USER_HAS_SEEN_WELCOME = booleanPreferencesKey("userHasSeenWelcome")
 val TEXT = stringPreferencesKey("exampleText")
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {

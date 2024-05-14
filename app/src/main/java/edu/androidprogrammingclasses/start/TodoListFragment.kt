@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import edu.androidprogrammingclasses.R
 import edu.androidprogrammingclasses.TEXT
 import edu.androidprogrammingclasses.dataStore
@@ -24,6 +25,7 @@ import edu.androidprogrammingclasses.start.TodoListViewState.Success
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TodoListFragment : Fragment() {
 
   private lateinit var binding: FragmentStartBinding

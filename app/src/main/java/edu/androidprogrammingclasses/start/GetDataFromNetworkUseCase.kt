@@ -8,24 +8,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class GetDataFromNetworkUseCase(
+class GetDataFromNetworkUseCase @Inject constructor(
   private val todosApiService: TodosApiService,
-//  private val repository: TodosListRepository,
   private val todosDao: TodoDao,
   private val mapper: TodoMapper,
-  private val coroutineScope: CoroutineScope
 ) {
 
   suspend fun invoke(): List<Todo> =
-    coroutineScope
-      .async(Dispatchers.IO) {
-        try {
-          todosApiService.getTodos().apply { storeData(this) }
-        } catch (e: UnknownHostException) {
-          todosDao.getTodos().map(mapper::mapEntityToTodo)
-        }
-      }.await()
+    try {
+      todosApiService.getTodos().apply { storeData(this) }
+    } catch (e: UnknownHostException) {
+      todosDao.getTodos().map(mapper::mapEntityToTodo)
+    }
 
   private suspend fun storeData(data: List<Todo>) {
     data.map(mapper::mapTodoToEntity)
