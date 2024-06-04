@@ -41,6 +41,9 @@ class TodoListFragment : Fragment() {
   ): View {
     binding = FragmentStartBinding.inflate(inflater, container, false)
 
+    binding.lifecycleOwner = this
+    binding.viewModel = viewModel
+
     binding.navigateButton.setOnClickListener {
       findNavController().navigate(R.id.actionNavigateToSecondScreen)
     }
@@ -49,13 +52,11 @@ class TodoListFragment : Fragment() {
       viewModel.getDataFromNetwork()
     }
 
-    binding.textButton.setOnClickListener {
-      lifecycleScope.launch {
-        requireContext().dataStore
-          .edit {
-            it[TEXT] = binding.editText.text.toString()
-          }
-      }
+    binding.writeButton.setOnClickListener {
+      binding.editText
+        .text
+        .toString()
+        .also(viewModel::setTextData)
     }
 
     return binding.root
@@ -74,21 +75,18 @@ class TodoListFragment : Fragment() {
         .data
         .map { it[TEXT] ?: "String was empty" }
         .collect {
-          binding.textResult.text = it
         }
     }
 
     viewModel.responseLiveData.observe(viewLifecycleOwner) {
       when (it) {
-        Loading -> binding.progressIndicator.visibility = VISIBLE
+        Loading -> {  }
         is Success -> {
-          binding.progressIndicator.visibility = GONE
           todosAdapter.data = it.result
           todosAdapter.notifyDataSetChanged()
         }
 
         is Error -> {
-          binding.progressIndicator.visibility = GONE
           Log.e("Todos fetch", it.e.message.orEmpty())
         }
       }

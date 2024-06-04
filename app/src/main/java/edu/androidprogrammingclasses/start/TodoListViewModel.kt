@@ -28,15 +28,21 @@ class TodoListViewModel @Inject constructor(
   private val getDataFromNetworkUseCase: GetDataFromNetworkUseCase
 ) : ViewModel() {
 
-
   private val todosListRepository = TodosListRepository()
 
   private val toggleTodoCompletionUseCase = ToggleTodoCompletionUseCase(
     todosListRepository
   )
 
-  private val _responseLiveData = MutableLiveData<TodoListViewState>()
+  private val _responseLiveData = MutableLiveData<TodoListViewState>(Success(emptyList()))
   val responseLiveData: LiveData<TodoListViewState> = _responseLiveData
+
+  private val _textLiveData = MutableLiveData<String>()
+  val textLiveData: LiveData<String> = _textLiveData
+
+  fun setTextData(text: String) {
+    _textLiveData.value = "$text has lenght of ${text.length}"
+  }
 
   fun getDataFromNetwork() {
     viewModelScope.launch {

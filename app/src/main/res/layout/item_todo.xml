@@ -10,13 +10,27 @@
 
   <TextView
     android:id="@+id/todoName"
-    android:layout_width="0dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:layout_constraintEnd_toStartOf="@id/isCompletedToggle"
+    app:layout_constraintEnd_toStartOf="@id/todoName2"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
-    tools:text="Todo name" />
+    android:textSize="18sp"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"
+    tools:text="Todo name sjljs la;sfdjl fdsh " />
+
+
+  <TextView
+    android:id="@+id/todoName2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toStartOf="@id/isCompletedToggle"
+    app:layout_constraintStart_toEndOf="@id/todoName"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:textSize="18sp"
+    tools:text="Todo name sjljs" />
 
   <androidx.appcompat.widget.AppCompatToggleButton
     android:id="@+id/isCompletedToggle"
@@ -25,6 +39,7 @@
     android:textOn="ON"
     android:textOff="OFF"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintStart_toEndOf="@id/todoName2"
+    app:layout_constraintTop_toBottomOf="@id/todoName2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
